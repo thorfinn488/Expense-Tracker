@@ -1,0 +1,25 @@
+{
+  "name": "expense-tracker-ultimate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expense Tracker Ultimate - static frontend with a TypeScript Node/Express + PostgreSQL backend",
+  "scripts": {
+    "dev": "nodemon --watch backend/src --ext ts --exec ts-node backend/src/server.ts",
+    "build:backend": "tsc -p backend/tsconfig.json",
+    "start": "node dist/backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/pg": "^8.16.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  }
+}
