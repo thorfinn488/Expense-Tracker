@@ -1,3 +1,4 @@
+
 import express, { Request, Response } from "express";
 import cors from "cors";
 import path from "path";
@@ -16,8 +17,13 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-const staticRoot = path.resolve(__dirname, "../../..");
+const staticRoot = path.resolve(process.cwd());
 app.use(express.static(staticRoot));
+
+// Root route handler
+app.get("/", (_req: Request, res: Response) => {
+  res.sendFile(path.join(staticRoot, "index.html"));
+});
 
 interface Expense {
   id: number;
@@ -182,7 +188,7 @@ app.get("/api/expenses/breakdown", async (_req: Request, res: Response) => {
     `;
 
     const result = await pool.query(sql);
-    const rows = result.rows.map((row) => ({
+    const rows = result.rows.map((row: { category: string; total: string; count: string }) => ({
       category: row.category as string,
       total: Number(row.total ?? 0),
       count: Number(row.count ?? 0),
