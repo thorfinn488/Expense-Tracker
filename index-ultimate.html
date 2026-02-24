@@ -11,19 +11,110 @@
 <body>
     <!-- Animated Background -->
     <div class="animated-bg"></div>
+
+    <!-- Top Navigation -->
+    <header class="app-nav" aria-label="Primary navigation">
+        <div class="app-nav-inner">
+            <div class="app-logo">₹ Flow</div>
+            <nav class="app-nav-links" aria-label="Main sections">
+                <button class="app-nav-link app-nav-link-active" data-section="home">Home</button>
+                <button class="app-nav-link" data-section="tracker">Tracker</button>
+                <button class="app-nav-link" data-section="insights">Insights</button>
+                <button class="app-nav-link" data-section="auth">Account</button>
+            </nav>
+            <div class="app-nav-user" id="nav-user"></div>
+        </div>
+    </header>
     
     <div class="container">
+        <!-- Home / Hero Section -->
+        <section id="home" class="hero-section" aria-label="Home">
+            <div class="hero-card">
+                <p class="hero-kicker">PERSONAL MONEY DASHBOARD</p>
+                <h1 class="hero-title">See your spending as simple streaks and stories.</h1>
+                <p class="hero-subtitle">
+                    Switch between fast entry, weekly streaks, and long‑term trends.
+                    Designed to feel like a habit app, not a spreadsheet.
+                </p>
+                <div class="hero-cta-row">
+                    <button class="hero-cta-button app-nav-link" data-section="tracker">
+                        Open Tracker
+                    </button>
+                    <div class="hero-pill">
+                        <span class="hero-dot"></span>
+                        <span>Backed by PostgreSQL · TypeScript API</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auth Section -->
+        <section id="auth" class="auth-section" aria-label="Account">
+            <div class="auth-card">
+                <h2 class="auth-title">Sign in to sync your flow</h2>
+                <p class="auth-subtitle">
+                    Choose how you want to log in. This demo keeps it simple: no passwords, just your email or phone.
+                </p>
+
+                <div class="auth-grid">
+                    <div class="auth-column">
+                        <h3 class="auth-column-title">Login with Google</h3>
+                        <form id="google-login-form" class="auth-form">
+                            <label for="google-email" class="auth-label">Google email</label>
+                            <input
+                                id="google-email"
+                                type="email"
+                                class="auth-input"
+                                placeholder="you@gmail.com"
+                                required
+                            >
+                            <button type="submit" class="auth-button auth-google-button">
+                                Continue with Google
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="auth-column">
+                        <h3 class="auth-column-title">Login with Phone</h3>
+                        <form id="phone-login-form" class="auth-form">
+                            <label for="phone-number" class="auth-label">Phone number</label>
+                            <input
+                                id="phone-number"
+                                type="tel"
+                                class="auth-input"
+                                placeholder="+91 98765 43210"
+                                required
+                            >
+                            <button type="submit" class="auth-button auth-phone-button">
+                                Continue with Phone
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="auth-footer">
+                    <p id="auth-status" class="auth-status" aria-live="polite"></p>
+                    <button id="logout-button" class="auth-logout-button" hidden>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <!-- Header Section -->
         <header class="manga-header">
             <div class="header-content">
                 <div class="header-icon">₹</div>
                 <h1 class="manga-title">EXPENSE TRACKER</h1>
                 <p class="manga-subtitle"> MASTER YOUR SPENDING! 🔥</p>
+                <div class="header-actions">
+                    <button id="auth-logout" class="manga-button" style="margin-left:auto">Logout</button>
+                </div>
             </div>
         </header>
 
         <!-- Currency Selector Section -->
-        <section class="currency-section" aria-label="Currency Selection">
+        <section id="tracker" class="currency-section" aria-label="Currency Selection">
             <div class="currency-box">
                 <label for="currency-select" class="currency-label">🌍 SELECT CURRENCY</label>
                 <select id="currency-select" class="currency-select" aria-label="Choose currency">
@@ -38,6 +129,37 @@
                     <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
                     <option value="MXN">🇲🇽 MXN - Mexican Peso</option>
                 </select>
+            </div>
+        </section>
+
+        <!-- Weekly Overview Section -->
+        <section id="insights" class="weekly-section" aria-label="Weekly Overview">
+            <div class="weekly-container">
+                <div class="weekly-header">
+                    <h2 class="weekly-title">Weekly Overview</h2>
+                    <p class="weekly-subtitle">Last 7 days by category</p>
+                </div>
+
+                <div class="weekly-legend" aria-hidden="true">
+                    <div class="weekly-legend-item">
+                        <span class="legend-dot legend-low"></span>
+                        <span class="legend-label">Light spend</span>
+                    </div>
+                    <div class="weekly-legend-item">
+                        <span class="legend-dot legend-medium"></span>
+                        <span class="legend-label">Moderate</span>
+                    </div>
+                    <div class="weekly-legend-item">
+                        <span class="legend-dot legend-high"></span>
+                        <span class="legend-label">High spend</span>
+                    </div>
+                </div>
+
+                <div class="weekly-day-header" id="weekly-day-header" aria-hidden="true"></div>
+
+                <div id="weekly-grid" class="weekly-grid" role="region" aria-live="polite">
+                    <p class="loading-text">Loading weekly overview...</p>
+                </div>
             </div>
         </section>
 
@@ -60,6 +182,24 @@
                 <div class="stat-value" id="highest-spent">$0.00</div>
                 <div class="stat-meta">single expense</div>
             </article>
+        </section>
+
+        <!-- Trends Section -->
+        <section class="trend-section" aria-label="Monthly Trends">
+            <div class="trend-container">
+                <div class="trend-header">
+                    <h2 class="trend-title">Spending Trends</h2>
+                    <div class="trend-range-toggle" role="radiogroup" aria-label="Select trend range">
+                        <button class="trend-range-button" data-trend-months="2" aria-pressed="false">2M</button>
+                        <button class="trend-range-button" data-trend-months="6" aria-pressed="false">6M</button>
+                        <button class="trend-range-button trend-range-active" data-trend-months="12" aria-pressed="true">1Y</button>
+                    </div>
+                </div>
+                <p class="trend-subtitle">Monthly totals · Uses selected category when set</p>
+                <div class="trend-chart-wrapper">
+                    <canvas id="monthly-chart" aria-label="Monthly expense chart" role="img"></canvas>
+                </div>
+            </div>
         </section>
 
         <!-- Form Section -->
@@ -202,6 +342,29 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="script-enhanced.js"></script>
+        <script>
+            async function initAuth() {
+                try {
+                    const r = await fetch('/api/auth/me');
+                    const j = await r.json();
+                    const btn = document.getElementById('auth-logout');
+                    if (!j.user) {
+                        btn!.textContent = 'Login';
+                        btn!.addEventListener('click', () => { window.location.href = '/'; });
+                    } else {
+                        btn!.textContent = 'Logout';
+                        btn!.addEventListener('click', async () => {
+                            await fetch('/api/auth/logout', { method: 'POST' });
+                            window.location.href = '/';
+                        });
+                    }
+                } catch (e) {
+                    /* ignore */
+                }
+            }
+            initAuth();
+        </script>
 </body>
 </html>

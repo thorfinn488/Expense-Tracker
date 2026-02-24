@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign In - Expense Tracker</title>
+  <link rel="stylesheet" href="styles-ultimate.css">
+  <style>
+    .auth-container{max-width:420px;margin:6vh auto;padding:24px;background:rgba(255,255,255,0.95);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+    .auth-btn{display:block;width:100%;padding:12px;margin:8px 0;border-radius:6px;border:none;font-size:16px}
+    .google{background:#4285F4;color:#fff}
+    .phone{background:#34A853;color:#fff}
+    .small{font-size:14px;margin-top:8px;color:#666}
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h1>Welcome to Expense Tracker</h1>
+    <p>Sign in to continue</p>
+
+    <button id="google-dev" class="auth-btn google">Sign in with Google (dev)</button>
+
+    <div>
+      <label for="phone-input">Phone number</label>
+      <input id="phone-input" placeholder="+1..." style="width:100%;padding:10px;margin-top:6px;border-radius:6px;border:1px solid #ddd">
+      <button id="phone-signin" class="auth-btn phone">Sign in with Phone</button>
+    </div>
+
+    <p class="small">Developer Google flow: enter your Google email in the popup to simulate OAuth.</p>
+  </div>
+
+  <script>
+    document.getElementById('google-dev')!.addEventListener('click', async () => {
+      const email = prompt('Enter your Google email (dev only)');
+      if (!email) return;
+      const name = email.split('@')[0];
+      try {
+        const res = await fetch('/api/auth/google-dev', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ email, name })
+        });
+        if (!res.ok) throw new Error('Sign-in failed');
+        window.location.href = '/';
+      } catch (e) {
+        alert('Sign-in failed');
+      }
+    });
+
+    document.getElementById('phone-signin')!.addEventListener('click', async () => {
+      const phone = (document.getElementById('phone-input') as HTMLInputElement).value;
+      if (!phone) { alert('Enter phone'); return; }
+      try {
+        const res = await fetch('/api/auth/phone', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ phone })
+        });
+        if (!res.ok) throw new Error('Sign-in failed');
+        window.location.href = '/';
+      } catch (e) {
+        alert('Sign-in failed');
+      }
+    });
+  </script>
+</body>
+</html>
