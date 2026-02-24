@@ -42,7 +42,7 @@ npm install
 For development (auto‑reload with `nodemon` + `ts-node`):
 
 ```bash
-npm run dev
+Npm DEV run
 ```
 
 The API and static frontend will be served from:
